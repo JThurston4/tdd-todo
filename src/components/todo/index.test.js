@@ -3,9 +3,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
 import {rest} from 'msw'
 import {setupServer} from 'msw/node'
-
 import Todo from './index';
-
 
 const allTodos = [
   {description: 'the first todo', completed: false},
@@ -39,11 +37,21 @@ describe("todo", () => {
     
     it("should allow typing", async () => {
       render(<Todo />)
-
-      await userEvent.type(screen.getByRole('textbox'), 'Hello')
-      expect(screen.getByRole('textbox')).toHaveValue('Hello')
+      const textbox = screen.getByRole('textbox');
+      await userEvent.type(textbox, 'Hello')
+      expect(textbox).toHaveValue('Hello')
     });
   });
+
+  it('should clear after todo is submit', async () => {
+    render(<Todo />)
+    const textbox = screen.getByRole('textbox');
+
+    await userEvent.type(textbox, 'Hello')
+    fireEvent.click(screen.getByTestId('todo-add-btn'));
+    
+    expect(textbox).toHaveValue('')
+  })
 
   describe("add button", ()=> {
     it("should exist", () => {
@@ -54,7 +62,9 @@ describe("todo", () => {
 
     it('should add a todo to the todo list when text field is filled and btn is clicked', async () => {
       render(<Todo />);
-      await userEvent.type(screen.getByRole('textbox'), 'Hello');
+      const textbox = screen.getByRole('textbox');
+
+      await userEvent.type(textbox, 'Hello');
       fireEvent.click(screen.getByTestId('todo-add-btn'));
       
       const todos = screen.getAllByTestId('todo-item');

@@ -22,6 +22,7 @@ function Todo () {
 
   const handleAdd = () => {
     setTodos(todos => [...todos, {description: addTodo, completed: false}]);
+    setAddTodo('');
   }
 
   const handleTextChange = (ev) => {
