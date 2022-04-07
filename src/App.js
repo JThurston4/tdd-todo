@@ -1,6 +1,4 @@
-import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
 import Counter from './components/Counter/index';
 import Todo from './components/todo';
 

@@ -1,23 +1,55 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import { Checkbox } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 
 function Todo () {
   const [todos, setTodos] = useState([]);
   const [addTodo, setAddTodo] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    const fetchAllTodos = async () => {
+      try {
+        const response = await axios.get('/api/todos');
+        setTodos(response.data.todos);
+      } catch (err) {
+        setErrorMessage('Failed to fetch todos');
+      }
+    };
+
+    fetchAllTodos();
+  }, []);
 
   const handleAdd = () => {
-    
-    setTodos(todos => [...todos, <li data-testid="todo-item">{addTodo}</li>]);
+    setTodos(todos => [...todos, {description: addTodo, completed: false}]);
   }
 
   const handleTextChange = (ev) => {
-    // console.log(ev.target.value);
     setAddTodo(ev.target.value);
- }
+  }
+
+  const handleCheckboxChange = (index) => {
+    todos[index].completed = !todos[index].completed;
+    setTodos([...todos])
+  }
+
   return (
     <div>
       <textarea data-testid="todo-text-input" value={addTodo} onChange={handleTextChange}></textarea>
       <button data-testid="todo-add-btn" onClick={handleAdd}>Add</button>
-      <ul data-testid="todo-list">{todos}</ul>
+      {errorMessage && (
+        <p>{errorMessage}</p>
+      )}
+      <ul data-testid="todo-list">{todos.map((todo, index) => 
+          <li data-testid="todo-item" key={index}>
+            <p>{todo.description}</p>
+            <Checkbox
+              checked={todo.completed}
+              onChange={() => handleCheckboxChange(index)}
+            />
+          </li>
+        )}
+      </ul>
     </div>
   )
 }
