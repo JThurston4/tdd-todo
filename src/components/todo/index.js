@@ -1,59 +1,32 @@
-import axios from 'axios';
-import { Checkbox } from '@mui/material';
+// import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import TodosInput from './todosInput';
+import TodosDisplay from './todosDisplay';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Todo () {
-  const [todos, setTodos] = useState([]);
-  const [addTodo, setAddTodo] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const todos = useSelector(state => state.entities.todos.todos);
 
-  useEffect(() => {
-    const fetchAllTodos = async () => {
-      try {
-        const response = await axios.get('/api/todos');
-        setTodos(response.data.todos);
-      } catch (err) {
-        setErrorMessage('Failed to fetch todos');
-      }
-    };
+  // for api mocking
+  // useEffect(() => {
+  //   const fetchAllTodos = async () => {
+  //     try {
+  //       const response = await axios.get('/api/todos');
+  //       setTodos(response.data.todos);
+  //     } catch (err) {
+  //       setErrorMessage('Failed to fetch todos');
+  //     }
+  //   };
 
-    fetchAllTodos();
-  }, []);
-
-  const handleAdd = () => {
-    setTodos(todos => [...todos, {description: addTodo, completed: false}]);
-    setAddTodo('');
-  }
-
-  const handleTextChange = (ev) => {
-    setAddTodo(ev.target.value);
-  }
-
-  const handleCheckboxChange = (index) => {
-    todos[index].completed = !todos[index].completed;
-    setTodos([...todos])
-  }
+  //   fetchAllTodos();
+  // }, []);
 
   return (
     <div>
-      <textarea data-testid="todo-text-input" value={addTodo} onChange={handleTextChange}></textarea>
-      <button data-testid="todo-add-btn" onClick={handleAdd}>Add</button>
-      {errorMessage && (
-        <p>{errorMessage}</p>
-      )}
-      <ul data-testid="todo-list">{todos.map((todo, index) => 
-          <li data-testid="todo-item" key={index}>
-            <p>{todo.description}</p>
-            <Checkbox
-              checked={todo.completed}
-              onChange={() => handleCheckboxChange(index)}
-            />
-          </li>
-        )}
-      </ul>
+      <TodosInput todoLength={todos.length}/>
+      <TodosDisplay todos={todos}/>
     </div>
   )
 }
-
 
 export default Todo;
