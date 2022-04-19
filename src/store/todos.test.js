@@ -65,5 +65,28 @@ describe(`todos reducer`, () => {
         id: 1
       }
     ])
+  });
+
+  it(`should be able to delete a todo`, () => {
+    const previousState = {todos: [
+      {
+        description: 'Run the tests',
+        completed: true,
+        id: 0
+      },
+      {
+        description: 'Use Redux',
+        completed: false,
+        id: 1
+      }
+    ]};
+
+    expect(reducer(previousState, todoDeleted(0)).todos).toEqual([
+      {
+        description: 'Use Redux',
+        completed: false,
+        id: 1
+      }
+    ])
   })
 })

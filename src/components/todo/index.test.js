@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, fireEvent, screen, within} from '../../test-utils/render';
+import {render, fireEvent, screen, within, waitFor} from '../../test-utils/render';
 import userEvent from '@testing-library/user-event'
 import {rest} from 'msw'
 import {setupServer} from 'msw/node'
@@ -46,4 +46,32 @@ describe("todo", () => {
     expect(within(todos[0]).getByRole('checkbox')).toHaveProperty('checked', true);
   
   });
+
+
+  it(`should remove a todo when clicking the delete button`, async () => {
+    render(<Todo />);
+    const textbox = screen.getByRole('textbox');
+  
+    await userEvent.type(textbox, 'Hello');
+    fireEvent.click(screen.getByTestId('todo-add-btn'));
+    await userEvent.type(textbox, 'todo 2');
+    fireEvent.click(screen.getByTestId('todo-add-btn'));
+    await userEvent.type(textbox, 'three three tee hee');
+    fireEvent.click(screen.getByTestId('todo-add-btn'));
+
+    const todos = screen.getAllByTestId('todo-item');
+    expect(todos.length).toEqual(3);
+    expect(todos[0]).toHaveTextContent('Hello');
+
+    fireEvent.click(within(todos[0]).getByRole('button'));
+    const newTodos = screen.getAllByTestId('todo-item');
+    
+    await waitFor(() => {
+      expect(newTodos.length).toEqual(2);
+    })
+    expect(newTodos[0]).toHaveTextContent('todo 2');
+    expect(newTodos[1]).toHaveTextContent('three three tee hee');
+    expect(newTodos[2]).toBeFalsy();
+    
+  })
 });

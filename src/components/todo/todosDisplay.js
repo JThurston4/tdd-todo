@@ -1,14 +1,20 @@
 import { Checkbox } from '@mui/material';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import {todoStatusChanged} from '../../store/todos';
+import { useDispatch, useSelector } from 'react-redux';
+import {todoStatusChanged, todoDeleted} from '../../store/todos';
 
 function TodosDisplay (props) {
+  
   const dispatch = useDispatch();
   const {todos} = props;
+  // console.log(todos)
 
   const handleCheckboxChange = (todo) => {
-    dispatch(todoStatusChanged({id: todo.id, completed: !todo.completed}))
+    dispatch(todoStatusChanged({id: todo.id, completed: !todo.completed}));
+  }
+
+  const handleDelete = (id) => {
+    dispatch(todoDeleted(id));
   }
 
   return todos && !!todos.length ? (
@@ -19,6 +25,7 @@ function TodosDisplay (props) {
             checked={todo.completed}
             onChange={() => handleCheckboxChange(todo)}
           />
+          <button data-testid="delete-todo" onClick={() => handleDelete(todo.id)}>Delete</button>
         </li>
       )}
     </ul>
