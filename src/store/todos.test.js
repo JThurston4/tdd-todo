@@ -45,6 +45,11 @@ describe(`todos reducer`, () => {
         description: 'Run the tests',
         completed: false,
         id: 0
+      },
+      {
+        description: 'Use Redux',
+        completed: false,
+        id: 1
       }
     ]};
 
@@ -53,6 +58,11 @@ describe(`todos reducer`, () => {
         description: 'Run the tests', 
         completed: true,
         id: 0
+      },
+      {
+        description: 'Use Redux',
+        completed: false,
+        id: 1
       }
     ])
   })
