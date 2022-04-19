@@ -1,8 +1,8 @@
 // import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import TodosInput from './todosInput';
 import TodosDisplay from './todosDisplay';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function Todo () {
   const todos = useSelector(state => state.entities.todos.todos);

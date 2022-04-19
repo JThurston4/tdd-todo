@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, fireEvent, screen, within} from '../../test-utils/render';
+import {render, screen} from '../../test-utils/render';
 import {rest} from 'msw'
 import {setupServer} from 'msw/node'
 import TodoDisplay from './todosDisplay';

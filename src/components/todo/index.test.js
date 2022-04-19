@@ -46,14 +46,4 @@ describe("todo", () => {
     expect(within(todos[0]).getByRole('checkbox')).toHaveProperty('checked', true);
   
   });
-
-  // it(`should allow the user to click the checkbox and change the checkbox value`, async () => {
-  //   render(<Todo />);
-
-  //   const todos = await screen.findAllByTestId('todo-item');
-  
-  //   fireEvent.click(within(todos[0]).getByRole('checkbox'));
-  //   expect(within(todos[0]).getByRole('checkbox')).toHaveProperty('checked', true);
-
-  // })
 });
