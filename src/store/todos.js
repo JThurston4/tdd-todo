@@ -14,7 +14,7 @@ const todosSlice = createSlice({
       state.todos = [...state.todos].filter((todo) => todo.id !== action.payload);
     },
     todoStatusChanged: (state, action) => {
-      state.todos = state.todos.map((todo, i) => {
+      state.todos = state.todos.map((todo) => {
         if(todo.id !== action.payload.id) {
           return todo;
         };

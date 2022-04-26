@@ -2,6 +2,19 @@ import reducer, { todoAdded, todoDeleted, todoStatusChanged } from './todos'
 
 describe(`todos reducer`, () => {
 
+  const initialState = {todos: [
+    {
+      description: 'Run the tests',
+      completed: true,
+      id: 0
+    },
+    {
+      description: 'Use Redux',
+      completed: false,
+      id: 1
+    }
+  ]};
+
   test('should return the initial state', () => {
     expect(reducer(undefined, {}).todos).toEqual([])
   })
@@ -25,38 +38,14 @@ describe(`todos reducer`, () => {
         id: 0
       }
     ]}
-    expect(reducer(previousState, todoAdded({description: 'Use Redux', completed: false, id: 1})).todos).toEqual([
-      {
-        description: 'Run the tests',
-        completed: true,
-        id: 0
-      },
-      {
-        description: 'Use Redux',
-        completed: false,
-        id: 1
-      }
-    ])
+    expect(reducer(previousState, todoAdded({description: 'Use Redux', completed: false, id: 1})).todos).toEqual(initialState.todos)
   });
 
   it(`should be able to change a todo's completion status`, () => {
-    const previousState = {todos: [
-      {
-        description: 'Run the tests',
-        completed: false,
-        id: 0
-      },
-      {
-        description: 'Use Redux',
-        completed: false,
-        id: 1
-      }
-    ]};
-
-    expect(reducer(previousState, todoStatusChanged({id: 0, completed: true})).todos).toEqual([
+    expect(reducer(initialState, todoStatusChanged({id: 0, completed: false})).todos).toEqual([
       {
         description: 'Run the tests', 
-        completed: true,
+        completed: false,
         id: 0
       },
       {
@@ -68,20 +57,7 @@ describe(`todos reducer`, () => {
   });
 
   it(`should be able to delete a todo`, () => {
-    const previousState = {todos: [
-      {
-        description: 'Run the tests',
-        completed: true,
-        id: 0
-      },
-      {
-        description: 'Use Redux',
-        completed: false,
-        id: 1
-      }
-    ]};
-
-    expect(reducer(previousState, todoDeleted(0)).todos).toEqual([
+    expect(reducer(initialState, todoDeleted(0)).todos).toEqual([
       {
         description: 'Use Redux',
         completed: false,
